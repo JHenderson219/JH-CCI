@@ -84,3 +84,47 @@ let results2 = strArr.map(element => isUniqueStr2(element));
 console.log("isUniqueStr PART 1 results:", results);
 
 console.log("isUniqueStr2 PART 2 results:", results2);
+
+
+/*
+  Question 1.2
+  Write code to reverse a C-Style string (C-String means that "abcd" is represented as five characters, including the null character)
+*/
+// JS-style reversal for comparison to actual answers later
+let reversedStrArr = strArr.map(element => element.split('').reverse().join(''));
+
+// C-style strings with null terminators
+let strArrWithNulls = strArr.map(element => {
+  let arr = element.split('');
+  arr.push(null);
+  return arr;
+});
+// console.log('reversedStrArr', reversedStrArr);
+// console.log('strWithNulls', strArrWithNulls);
+
+/*
+  Worst case time complexity O(n)
+  Best case time complexity O(n)
+  Space complexity O(n)
+*/
+function reverse(arr) {
+  let length = arr.length-2;
+  let newArr = [];
+  // start at end of the original array, -2 indices to avoid null terminator
+  for (let i = length; i > -1; i--) {
+    // push each value from end of the array to start, including index 0
+    newArr.push(arr[i]);
+  }
+  // finally, push a null onto the end of the array
+  newArr.push(null);
+  return newArr;
+}
+
+let results3 = strArrWithNulls.map(arr => reverse(arr).join(''));
+
+reversedStrArr.forEach((string, index) => {
+  // compare against matching index in joined arrays from function output
+  console.log('test string is:', string, 'resultString is:', results3[index]);
+  let errorMsg = "The strings do not match";
+  console.assert(string == results3[index], {string, result: results3[index], errorMsg});
+});
