@@ -76,14 +76,14 @@ let strArr = [
   "why&*@#stop", // true
   "ifkj&hyli#&*", // false
   "this am", //true
-  "is a sentance", //false
+  "is a sentence", //false
 ];
 
 let results = strArr.map(element => isUniqueStr(element));
 let results2 = strArr.map(element => isUniqueStr2(element));
-console.log("isUniqueStr PART 1 results:", results);
+// console.log("isUniqueStr PART 1 results:", results);
 
-console.log("isUniqueStr2 PART 2 results:", results2);
+// console.log("isUniqueStr2 PART 2 results:", results2);
 
 
 /*
@@ -124,7 +124,47 @@ let results3 = strArrWithNulls.map(arr => reverse(arr).join(''));
 
 reversedStrArr.forEach((string, index) => {
   // compare against matching index in joined arrays from function output
-  console.log('test string is:', string, 'resultString is:', results3[index]);
   let errorMsg = "The strings do not match";
-  console.assert(string == results3[index], {string, result: results3[index], errorMsg});
+  // console.log('test string is:', string, 'resultString is:', results3[index]);
+  // console.assert(string == results3[index], {string, result: results3[index], errorMsg});
+});
+
+
+let duplicateArr = [
+  "Clear",
+  "has holes",
+  "isAProperCamelCaseSentence",
+  "maybeHasBigMoleWholesWherever"
+]
+let validArr = [
+  "Clear",
+  "ha ole",
+  "iAPopCmlStc",
+  "ybHBigv"
+]
+/*
+  Question 1.3
+  Design an algorithm and write code to remove the duplicate characters in a string
+  without using any additional buffer. NOTE: One or two additional variables are fine.
+  An extra copy of the array is not.
+ 
+  FOLLOW UP
+  Write the test cases for this method.
+*/
+
+function removeDuplicates(str) {
+  let length = str.length;
+  let index = 0;
+  let out = '';
+  while (index < length) {
+    let currentChar = [];
+    for (let i = index; i < length; i++) {
+
+    }
+  }
+  return out;
+}
+
+let results4 = duplicateArr.forEach((string, index) => {
+  console.log('expecting:', validArr[index], 'result:', removeDuplicates(string));
 });
