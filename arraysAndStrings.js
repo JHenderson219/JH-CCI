@@ -81,9 +81,9 @@ let strArr = [
 
 let results = strArr.map(element => isUniqueStr(element));
 let results2 = strArr.map(element => isUniqueStr2(element));
-// console.log("isUniqueStr PART 1 results:", results);
+// console.warn("isUniqueStr PART 1 results:", results);
 
-// console.log("isUniqueStr2 PART 2 results:", results2);
+// console.warn("isUniqueStr2 PART 2 results:", results2);
 
 
 /*
@@ -99,8 +99,8 @@ let strArrWithNulls = strArr.map(element => {
   arr.push(null);
   return arr;
 });
-// console.log('reversedStrArr', reversedStrArr);
-// console.log('strWithNulls', strArrWithNulls);
+// console.warn('reversedStrArr', reversedStrArr);
+// console.warn('strWithNulls', strArrWithNulls);
 
 /*
   Worst case time complexity O(n)
@@ -125,7 +125,7 @@ let results3 = strArrWithNulls.map(arr => reverse(arr).join(''));
 reversedStrArr.forEach((string, index) => {
   // compare against matching index in joined arrays from function output
   let errorMsg = "The strings do not match";
-  // console.log('test string is:', string, 'resultString is:', results3[index]);
+  // console.warn('test string is:', string, 'resultString is:', results3[index]);
   // console.assert(string == results3[index], {string, result: results3[index], errorMsg});
 });
 
@@ -133,14 +133,12 @@ reversedStrArr.forEach((string, index) => {
 let duplicateArr = [
   "Clear",
   "has holes",
-  "isAProperCamelCaseSentence",
-  "maybeHasBigMoleWholesWherever"
+  "dude totally duped"
 ]
 let validArr = [
   "Clear",
-  "ha ole",
-  "iAPopCmlStc",
-  "ybHBigv"
+  "a ole",
+  "oayp"
 ]
 /*
   Question 1.3
@@ -152,19 +150,106 @@ let validArr = [
   Write the test cases for this method.
 */
 
-function removeDuplicates(str) {
-  let length = str.length;
-  let index = 0;
-  let out = '';
-  while (index < length) {
-    let currentChar = [];
-    for (let i = index; i < length; i++) {
+/*
+ SOLUTION NOTES
+ This problem raises some questions, both generally and for implementation in JavaScript
+ -What does additional buffer mean? Can we have no other data structure at all, or just not a new copy of the array?
+ -Are there time or space complexity requirements or guidelines?
+ -Can the string be null, empty, or another type at all?
 
+ Each of the solutions below make their own assumptions about the answers to some of these questions, while sharing others
+
+ Shared assumptions:
+ -The variable type passed into these functions will always be a non-null string
+ -The variable may be an empty string
+ -The variable may be converted into an array via string.split() on the first line, and joined to a string via string.join on the last line 
+    -This is so that the argument can be treated more like strings in other languages
+    -However, the solutions will treat the converted string as if it were the passed-in argument, so not to provide an easy way around the core challenge
+
+ Solution 1: No Additional Memory
+ -No other comparable data structure may be used. IE no hashmaps, no sets, no arrays (except for the array created from the original). The input must be modifed in place.
+ -The primary concern is space complexity, not time complexity.
+
+ Solution 2: Additional memory allowed
+ - Additional memory is allowed
+ - The primary concern is time complexity, not space complexity.
+
+*/
+
+/*
+* Solution 1: No Additional Memory 
+* Time complexity: O(n^2)
+* Space Complexity: O(n)
+*/
+function removeDuplicates(str) {
+  if (str.length <= 1) return str;
+
+  function removeAllInstances(stringArray, tgt) {
+    // removes all instances of a tgt character from a stringArray
+    stringArray.forEach((element, index, arr) => {
+      if (element === tgt) {
+        arr[index] = '';
+      }
+      // loop over the array, setting any element that matches tgt to empty
+    });
+  }
+
+  str = str.split('');
+  for (let i = 0; i < str.length; i++) {
+    // Check each char in turn against the others
+    for (let j = i+1; j < str.length; j++) {
+      // always start second loop at i+1 to avoid checking chars that were already checked earlier
+      if (str[i] === str[j]) {
+        removeAllInstances(str, str[i]);
+        // if a match is found, remove all instances of it
+      }
     }
   }
-  return out;
+  return str.join('');
 }
 
-let results4 = duplicateArr.forEach((string, index) => {
-  console.log('expecting:', validArr[index], 'result:', removeDuplicates(string));
-});
+
+/*
+* Solution 2: With Additional Memory 
+* Time Complexity: O(n)
+* Space Complexity: O(n)
+*/
+function removeDuplicates(str) {
+  if (str.length <= 1) return str;
+  function getRemoveList(arr) {
+    // gets a Set of characters to remove from the array
+    let chars = new Set();
+    let toRemove = new Set();
+    // create sets for comparison
+    for (let i = 0; i < arr.length; i++) {
+      let char = arr[i];
+      if (chars.has(char)) {
+        toRemove.add(char);
+        // if we already have an instance of this character in the list of character's we've seen, put it on the remove list
+      } else {
+        chars.add(char);
+        // if we don't, add it to the list of character's we've seen
+      }
+    }
+    return toRemove;
+  }
+
+  function removeCharacters(arr, removeList) {
+    // removes all characters from an array that are in the removeList Set
+    let newArr = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (!removeList.has(arr[i])) {
+        newArr.push(arr[i]);
+        // if the remove list doesn't have an instance of the character we are currently on, add it to the array of characters to output
+      }
+    }
+    return newArr;
+  }
+
+  let out = removeCharacters(str, getRemoveList(str));
+  return out.join('');
+}
+
+// let results4 = duplicateArr.forEach((string, index) => {
+//   console.warn('expecting:', validArr[index], 'result:', removeDuplicates(string));
+// });
