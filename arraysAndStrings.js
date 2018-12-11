@@ -253,3 +253,42 @@ function removeDuplicates(str) {
 // let results4 = duplicateArr.forEach((string, index) => {
 //   console.warn('expecting:', validArr[index], 'result:', removeDuplicates(string));
 // });
+
+
+/**
+ * Question 1.4
+ * Write a method to decide if two strings are anagrams or not.
+ */
+function areAnagrams(str1, str2) {
+  let set = new Set();
+  let out = true;
+  str1.split('').forEach(char => set.add(char));
+  str1.split('').forEach(char => {
+    if(!set.has(char)) {
+      out = false;
+    }
+  })
+  return out;
+}
+
+// console.log(areAnagrams('listen', 'silent'));
+
+
+/** 
+ * Question 1.5
+ * Write a method to replace all spaces in a string with ‘%20’
+ *
+*/
+
+function encodeSpaces(str) {
+  return str.split('').map(char => char === ' ' ? '%20' : char).join('');
+}
+
+// console.log(encodeSpaces('this is a string with spaces'));
+/*
+Question 1.6 
+
+Given an image represented by an NxN matrix, where each pixel in the image is 4
+bytes, write a method to rotate the image by 90 degrees Can you do this in place?
+*/
+
