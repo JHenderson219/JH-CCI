@@ -316,9 +316,53 @@ function rotateImage(matrix) {
   return newMatrix;
 }
 
+// let matrix = [
+//   [1, 2, 3],
+//   [4, 5, 6],
+//   [7, 8, 9]
+// ]
+// console.log(rotateImage(matrix));
+
+
+/*
+Question 1.7 
+
+Write an algorithm such that if an element in an MxN matrix is 0, its entire row and
+column is set to 0
+
+*/
+
+function clearRowsAndColumns(matrix) {
+  function matrixForEach(matrix, callback) {
+    for(let i = 0; i < matrix.length; i++) {
+      for(let j = 0; j < matrix[i].length; j++) {
+        callback(matrix[i][j], j, matrix[i], i, matrix);
+      }
+    }
+  }
+  function buildClearSets(element, elIndex, row, rowIndex) {
+    if (element === 0) {
+      clearRowSet.add(rowIndex);
+      clearColumnSet.add(elIndex);
+    }
+  }
+  let clearRowSet = new Set();
+  let clearColumnSet = new Set();
+
+  matrixForEach(matrix, buildClearSets);
+
+  matrixForEach(matrix, (element, elIndex, row, rowIndex, matrix) => {
+    if (clearRowSet.has(rowIndex) || clearColumnSet.has(elIndex)) {
+      matrix[rowIndex][elIndex] = 0;
+    }
+  });
+
+  return matrix;
+}
+
 let matrix = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9]
-]
-console.log(rotateImage(matrix));
+    [1,2,3,4],
+    [5,6,7,8],
+    [9,10,11,0],
+  ]
+console.log(clearRowsAndColumns(matrix))
