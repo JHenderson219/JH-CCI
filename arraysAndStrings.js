@@ -291,4 +291,34 @@ Question 1.6
 Given an image represented by an NxN matrix, where each pixel in the image is 4
 bytes, write a method to rotate the image by 90 degrees Can you do this in place?
 */
+function createEmptyMatrix(n){
+  let out = [];
+  for (let i = 0; i < n; i++){
+    let arr = [];
+    for (let j = 0; j < n; j++) {
+      arr.push(null);
+    }
+    out.push(arr);
+  }
+  return out;
+}
+function rotateImage(matrix) {
+  let newMatrix = createEmptyMatrix(matrix.length);
+  console.warn(newMatrix);
+  for(let i = 0; i < matrix.length; i++) {
+    for (let j = matrix.length-1; j > -1; j--){
+      
+      let index = Math.abs((matrix.length-1) - j);
+      console.warn(matrix[j][i], j, i, index);
+      newMatrix[i][index] = matrix[j][i];
+    }
+  }
+  return newMatrix;
+}
 
+let matrix = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+]
+console.log(rotateImage(matrix));
