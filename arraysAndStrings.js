@@ -360,9 +360,43 @@ function clearRowsAndColumns(matrix) {
   return matrix;
 }
 
-let matrix = [
-    [1,2,3,4],
-    [5,6,7,8],
-    [9,10,11,0],
-  ]
-console.log(clearRowsAndColumns(matrix))
+// let matrix = [
+//     [1,2,3,4],
+//     [5,6,7,8],
+//     [9,10,11,0],
+//   ]
+// console.log(clearRowsAndColumns(matrix))
+
+/*
+Questions 1.8
+
+Assume you have a method isSubstring which checks if one word is a substring of
+another.
+
+Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using
+only one call to isSubstring (i e , “waterbottle” is a rotation of “erbottlewat”)
+
+*/
+
+function isRotation(s1, s2) {
+  return areAnagrams(s1, s2);
+}
+
+// console.log(isRotation('waterbottle', 'erbottlewat'));
+
+/*
+Linked list introduction
+*/
+
+class Node {
+  constructor(data){
+    
+  }
+}
+
+
+/*
+Question 2.1
+
+
+*/
