@@ -103,24 +103,50 @@ function removeDuplicates2(list) {
   const head = list.head;
   // sort list
   let currentNode = head;
+  let isHead = true;
   while (currentNode.next) {
     if (currentNode.element > currentNode.next.element) {
       const lesser = currentNode.next;
-      const wasHead = currentNode.element === list.head.element ? true : false;
       currentNode.next = lesser.next;
       lesser.next = currentNode;
       currentNode = lesser;
-      if (wasHead) list.head = currentNode;
+      if (isHead) list.head = currentNode;
     } else {
       currentNode = currentNode.next;
     }
 
     // compare currentNode.element to currentNode.next.element
+    isHead = false;
   }
   // check each element in turn
   // delete dupes
 }
 
-removeDuplicates2(list);
-console.log(list);
+// removeDuplicates2(list);
+// console.log(list);
+
+/*
+Question 2.2
+
+Implement an algorithm to fnd the nth to last element of a singly linked list
+
+*/
+
+function linkedListSlice(list, n) {
+  const slice = new SinglyLinkedList();
+  let currNode = list.head;
+  const startSlice = list.length - n;
+  let currIndex = 1;
+  while (currNode.next) {
+    if (currIndex >= startSlice) {
+      slice.add(currNode.element);
+    }
+    currIndex++;
+    currNode = currNode.next;
+  }
+  return slice;
+}
+
+
+console.log(linkedListSlice(list, 5));
 
