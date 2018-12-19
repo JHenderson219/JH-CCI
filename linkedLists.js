@@ -2,10 +2,13 @@
   Linked list setup
 */
 class SinglyLinkedList { // eslint-disable-line
-  constructor() {
+  constructor(elementsArray) {
     this.head = null;
     this.length = 0;
     this.Node = SingleNode;
+    if (elementsArray) {
+      elementsArray.forEach((element) => this.add(element));
+    }
   }
   find(element) {
     let currNode = this.head;
@@ -148,5 +151,99 @@ function linkedListSlice(list, n) {
 }
 
 
-console.log(linkedListSlice(list, 5));
+// console.log(linkedListSlice(list, 5));
 
+
+/*
+Question 2.3
+
+Implement an algorithm to delete a node in the middle of a single linked list
+given only access to that node
+*/
+function getThirdNode(list) {
+  let index = 1;
+  let currNode = list.head;
+  while (index < 3) {
+    currNode = currNode.next;
+    index++;
+  }
+  return currNode;
+}
+function deleteNode(node) {
+  if (!node || !node.next) {
+    throw new Error('Node or next node is null. Failed to delete node');
+  }
+  node.element = node.next.element;
+  node.next = node.next.next;
+  return;
+}
+
+// deleteNode(getThirdNode(list));
+
+// console.log(list);
+
+
+/*
+Question 2.4
+
+You have two numbers represented by a linked list,
+where each node contains a single digit.
+
+The digits are stored in reverse order,
+such that the 1’s digit is at the head ofthe list.
+
+Write a function that adds the two numbers and returns the sum as a linked list
+
+EXAMPLE
+Input: (3 -> 1 -> 5) + (5 -> 9 -> 2)
+Output: 8 -> 0 -> 8
+*/
+
+const list1 = new SinglyLinkedList([2, 1, 5]);
+const list2 = new SinglyLinkedList([5, 9, 2]);
+function addLists(list1, list2) {
+  function multByTens(times) {
+    let out = 1;
+    for (let i = 0; i < times; i++) {
+      out = out * 10;
+    }
+    return out;
+  }
+  function getNumberFromList(list) {
+    let currNode = list.head;
+    let currIndex = 0;
+    let currMultiplier = 1;
+    let out = 0;
+    while (currNode) {
+      out += currNode.element * currMultiplier;
+      currIndex++;
+      currMultiplier = multByTens(currIndex);
+      currNode = currNode.next;
+    }
+    return out;
+  }
+  const sumStr = (getNumberFromList(list1) + getNumberFromList(list2)) + '';
+  let currNode = null;
+  let head = null;
+  const makeNode = (element) => {
+    return {
+      next: null,
+      element,
+    };
+  };
+  for (let i = sumStr.length - 1; i > -1; i--) {
+    const newNode = makeNode(sumStr[i]);
+    if (currNode) {
+      currNode.next = newNode;
+    }
+    if (!head) {
+      head = newNode;
+    }
+    currNode = newNode;
+  }
+  console.warn(head);
+  // add them together
+  // convert string to linked list - index thru and create
+}
+
+console.log(addLists(list1, list2));
