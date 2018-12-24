@@ -60,5 +60,36 @@ class Queue {
 
 
 /*
+Question 3.1
 
+Describe how you could use a single array to implement three stacks
 */
+
+class ArrStacks {
+  constructor(arr) {
+    this.arr = arr || [-2, -1, 0, 1, 2];
+  }
+  getStartIndex(stackNum) {
+    switch (stackNum) {
+      case 1:
+        return 0;
+      case 2:
+        return this.arr.length - 1;
+      case 3:
+        return Math.floor(this.arr.length / 2);
+      default:
+        break;
+    }
+  }
+  pop(stackNum) {
+    const out = this.peek(stackNum);
+    this.arr.splice(this.getStartIndex(stackNum, 1));
+    return out;
+  }
+  push(value, stackNum) {
+    this.arr.splice(this.getStartIndex(stackNum), 0, value);
+  }
+  peek(stackNum) {
+    return this.arr[this.getStartIndex(stackNum)];
+  }
+}
