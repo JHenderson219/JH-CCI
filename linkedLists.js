@@ -247,3 +247,30 @@ function addLists(list1, list2) {
 }
 
 console.log(addLists(list1, list2));
+
+
+/*
+Question 2.5
+Given a circular linked list, implement an algorithm which returns node at the beginning of the loop
+
+DEFINITION
+Circular linked list: A (corrupt) linked list in which a node’s next pointer points to an
+earlier node, so as to make a loop in the linked list
+EXAMPLE
+input: A -> B -> C -> D -> E -> C [the same C as earlier]
+output: C
+
+input: A -> B -> C -> D -> C [diff C] -> E -> C [repeated C]
+*/
+
+function findLoop(list) {
+  const currNode = list.head;
+  const set = new Set();
+  while (currNode.next) {
+    if (set.has(currNode)) {
+      return currNode;
+    }
+    set.add(currNode);
+  }
+}
+
