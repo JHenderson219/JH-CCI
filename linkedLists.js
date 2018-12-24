@@ -1,7 +1,7 @@
 /*
   Linked list setup
 */
-class SinglyLinkedList { // eslint-disable-line
+class SinglyLinkedList {
   constructor(elementsArray) {
     this.head = null;
     this.length = 0;
