@@ -169,14 +169,17 @@ minimal height
 function minHeightTree(arr = []) {
   const mid = Math.floor((arr.length - 1) / 2);
   const root = new Node(arr[mid]);
+
   const leftArr = arr.slice(0, mid);
   if (leftArr.length > 0) {
     root.left = minHeightTree(leftArr);
   }
+
   const rightArr = arr.slice(mid + 1, arr.length);
   if (rightArr.length > 0) {
     root.right = minHeightTree(rightArr);
   }
+
   return root;
 }
 const testArr = [1, 2, 3, 4, 5, 6, 7];
