@@ -53,7 +53,7 @@ function makeTree(arr) {
 }
 
 const tree = makeTree(values);
-console.log(tree);
+// console.log(tree);
 /**
  * Traverse a tree pre-order, perform callback on each node
  *
@@ -114,6 +114,59 @@ function postOrderTraverse(root, callback) {
   return;
 }
 // postOrderTraverse(tree.head, console.log);
+
+// function breadthFirstTraverse(root, callback) {
+//   if (!root) {
+//     return;
+//   }
+//   const nodes = [root];
+//   function getNodes(oldNodes) {
+//     let newNodes = [];
+//     oldNodes.forEach((node) => {
+//       if (node.left) {
+//         newNodes.push(node.left);
+//       }
+//       if (node.right) {
+//         newNodes.push(node.right);
+//       }
+//       if (newNodes.length > 0) {
+//         newNodes = newNodes.concat(getNodes(newNodes));
+//       }
+//       return oldNodes.concat(newNodes);
+//     });
+//   }
+//   const printNodes = getNodes(nodes);
+//   printNodes.forEach((node) => {
+//     callback(node.value);
+//   });
+//   return printNodes;
+// }
+function breadthFirstTraverse(root, callback) {
+  const nodes = [[root]];
+
+  function getChildren(nodeArr) {
+    nodeArr.forEach((node) => {
+      const newArr = [];
+      if (node.left) {
+        newArr.push(node.left);
+      }
+      if (node.right) {
+        newArr.push(node.right);
+      }
+      nodes.push(newArr);
+      getChildren(newArr);
+    });
+  }
+
+  getChildren(nodes[0]);
+  return nodes.reduce((prev, curr) => {
+    return prev.concat(curr);
+  }, []);
+}
+
+console.log(breadthFirstTraverse(tree.head).map((node) => node.value));
+
+
 /*
 Problem 4.1
 
@@ -184,4 +237,4 @@ function minHeightTree(arr = []) {
 }
 const testArr = [1, 2, 3, 4, 5, 6, 7];
 
-console.log(minHeightTree(testArr));
+// console.log(minHeightTree(testArr));
