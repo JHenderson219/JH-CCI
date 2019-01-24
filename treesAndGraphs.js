@@ -213,7 +213,7 @@ function isBalanced(root) {
 
 
 /*
-  Problem 4.2
+  Problem 4.3
 
 Given a sorted (increasing order) array, write an algorithm to create a binary tree with
 minimal height
@@ -238,3 +238,14 @@ function minHeightTree(arr = []) {
 const testArr = [1, 2, 3, 4, 5, 6, 7];
 
 // console.log(minHeightTree(testArr));
+
+/*
+Problem 4.4
+
+Given a binary search tree, design an algorithm which creates a linked list of all the
+nodes at each depth (i e , if you have a tree with depth D, you’ll have D linked lists)
+*/
+
+function breadthFirstLinkedList() {
+
+}
