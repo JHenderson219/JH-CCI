@@ -290,8 +290,6 @@ a binary search tree where each node has a link to its parent
 
 function findNext(inputNode) {
   // get parent until find head (parent == null)
-  // in-order traverse to find original node
-  // next node we hit is our result
   const head = (function getHead(node) {
     if (!node.parent) {
       return node;
@@ -299,6 +297,8 @@ function findNext(inputNode) {
     getHead(node.parent);
   })(inputNode);
 
+  // in-order traverse to find original node
+  // next node we hit is our result
   return (function findNextNode(node, shouldReturn = false) {
     if (node === inputNode) {
       // return next node traversed to
