@@ -164,7 +164,7 @@ function breadthFirstTraverse(root, callback) {
   }, []);
 }
 
-console.log(breadthFirstTraverse(tree.head).map((node) => node.value));
+// console.log(breadthFirstTraverse(tree.head).map((node) => node.value));
 
 
 /*
@@ -246,6 +246,37 @@ Given a binary search tree, design an algorithm which creates a linked list of a
 nodes at each depth (i e , if you have a tree with depth D, you’ll have D linked lists)
 */
 
-function breadthFirstLinkedList() {
+function breadthFirstLinkedList(root) {
+  const listHeads = [root];
+  function makeList(nodes) {
+    const tempList = [];
+    nodes.forEach((node) => {
+      if (node.left) {
+        tempList.push(node.left);
+      }
+      if (node.right) {
+        tempList.push(node.right);
+      }
+      if (tempList.length > 0) {
+        const listHead = tempList[0];
+        listHeads.push(listHead);
+        tempList.forEach((node, index) => {
+          assignNext(node, index);
+        });
+        makeList(tempList);
+      }
+    });
 
+    function assignNext(node, index) {
+      node.next = null;
+      if (index < tempList.length) {
+        const nextNode = tempList[index + 1];
+        node.next = nextNode;
+      }
+    }
+  }
+  makeList(listHeads);
+  return listHeads;
 }
+const heads = breadthFirstLinkedList(tree.head);
+console.log(heads);
