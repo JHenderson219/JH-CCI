@@ -280,3 +280,37 @@ function breadthFirstLinkedList(root) {
 }
 const heads = breadthFirstLinkedList(tree.head);
 console.log(heads);
+
+/*
+Problem 4.5
+
+Write an algorithm to fnd the ‘next’ node (i e , in-order successor) of a given node in
+a binary search tree where each node has a link to its parent
+*/
+
+function findNext(inputNode) {
+  // get parent until find head (parent == null)
+  // in-order traverse to find original node
+  // next node we hit is our result
+  const head = (function getHead(node) {
+    if (!node.parent) {
+      return node;
+    }
+    getHead(node.parent);
+  })(inputNode);
+
+  return (function findNextNode(node, shouldReturn = false) {
+    if (node === inputNode) {
+      // return next node traversed to
+    }
+    if (shouldReturn) {
+      return node;
+    }
+    if (node.left) {
+      findNextNode(node.left, shouldReturn);
+    }
+    if (node.right) {
+      findNextNode(node.right, shouldReturn);
+    }
+  })(head);
+}
