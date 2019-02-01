@@ -74,7 +74,7 @@ class ArrStacks {
     if (!this.arr) {
       return null;
     }
-    let arr = this.arr;
+    const arr = this.arr;
     const out = [];
     const bound1 = Math.floor((arr.length - 1) / 3);
     const bound2 = Math.floor(((arr.length - 1) / 3) * 2);
@@ -101,7 +101,7 @@ class ArrStacks {
       // delete this stack
     }
     for (let i = stackNum; i < this.bounds.length; i++) {
-      let bounds = this.bounds[i];
+      const bounds = this.bounds[i];
       if (!(i === stackNum)) {
         bounds[0]--;
         // increment index 0
@@ -115,10 +115,10 @@ class ArrStacks {
     return out;
   }
   push(value, stackNum) {
-    let startIndex = getStartIndex(stackNum);
+    const startIndex = getStartIndex(stackNum);
     // iterate forward in bounds, not including stackNum[0], increment all values
     for (let i = stackNum; i < this.bounds.length; i++) {
-      let bounds = this.bounds[i];
+      const bounds = this.bounds[i];
       if (!(i === stackNum)) {
         bounds[0]++;
         // increment index 0
@@ -141,24 +141,87 @@ How would you design a stack which, in addition to push and pop, also has a func
 min which returns the minimum element? Push, pop and min should all operate in
 O(1) time.
 
-TODO: Finish me
-
 */
 class StackWithMin extends Stack {
   push(node) {
     super.push(node);
-    if (!this.mins) {
-      this.mins = [this.top];
+    if (!this.min) {
+      this.min = node;
     }
-    if (this.mins[this.mins.length-1].value >= this.top.value) {
-      this.mins.push(this.top);
+    if (node.value < this.min.value) {
+      node.min = this.min;
+      this.min = node;
     }
+    // insert value
+    // this.min.min.min ... from the largest value should eventually null terminate, and that object is the min for the stack
   }
   pop() {
     const out = super.pop();
-    if (out == this.min())
+    this.min = out.min;
+    return out;
   }
   min() {
     return this.min;
+  }
+}
+
+
+// 9,8,7,6
+// 1,7,4,9
+// 7,3,7,5,9
+// 3,9,5,7,4
+
+/*
+Problem 3.3
+
+Imagine a (literal) stack of plates. If the stack gets too high, it might topple.
+
+Therefore, in real life, we would likely start a new stack when the previous stack exceeds
+some threshold.
+
+Implement a data structure SetOfStacks that mimics this.
+
+SetOfStacks should be composed of several stacks, and should create a new stack once
+the previous one exceeds capacity.
+
+SetOfStacks push() and SetOfStacks pop() should behave identically to a single stack
+(that is, pop() should return the same values as it would if there were just a single stack)
+
+FOLLOW UP
+Implement a function popAt(int index) which performs a pop operation on a specifc
+sub-stack
+
+*/
+
+class SetOfStacks {
+  constructor(maxStackLength) {
+    this.maxStackLength = maxStackLength || 2;
+    this.stacks = [];
+  }
+  push(node) {
+    let stack = this._peekStack();
+    if (stack.length > this.maxStackLength) {
+      stack = new Stack();
+      this._pushStack(stack);
+    }
+    stack.push(node);
+  }
+  pop() {
+    // todo
+  }
+  popAt() {
+
+  }
+  peek() {
+    // todo: peekStack, then stack.peek
+  }
+  _pushStack() {
+    // todo: pushes stack onto stack arr
+  }
+  _popStack() {
+    // todo: pops stack from stack arr
+  }
+  _peekStack() {
+    return this.stacks[this.stacks.length - 1];
   }
 }
