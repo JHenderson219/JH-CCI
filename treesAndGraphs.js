@@ -301,6 +301,7 @@ function findNext(inputNode) {
   // next node we hit is our result
   return (function findNextNode(node, shouldReturn = false) {
     if (node === inputNode) {
+      shouldReturn = true;
       // return next node traversed to
     }
     if (shouldReturn) {
