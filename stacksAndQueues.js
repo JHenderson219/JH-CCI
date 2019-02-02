@@ -207,19 +207,23 @@ class SetOfStacks {
     stack.push(node);
   }
   pop() {
-    // todo
+    const selectedStack = this._peekStack();
+    const node = selectedStack.pop();
+    if (!selectedStack.peek()) {
+      // if last stack is empty
+      this.stacks = this.stacks.slice(this.stacks.length - 1);
+      // slice it off
+    }
+    return node;
   }
-  popAt() {
-
+  popAt(index) {
+    return this.stacks[index].pop();
   }
   peek() {
-    // todo: peekStack, then stack.peek
+    return this._peekStack().peek();
   }
-  _pushStack() {
-    // todo: pushes stack onto stack arr
-  }
-  _popStack() {
-    // todo: pops stack from stack arr
+  _pushStack(stack) {
+    this.stacks.push(stack);
   }
   _peekStack() {
     return this.stacks[this.stacks.length - 1];
