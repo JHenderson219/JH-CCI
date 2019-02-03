@@ -13,21 +13,20 @@ class Stack {
     if (!this.top) {
       return null;
     }
-    const out = this.top;
-    out.next = null;
+    const out = this.top.data;
     this.top = this.top.next;
     return out;
   }
   push(data) {
     const node = new Node(data);
-    node.next = this.top;
+    node.next = this.top || null;
     this.top = node;
   }
   peek() {
     if (!this.top) {
       return null;
     }
-    return this.top;
+    return this.top.data;
   }
 }
 
@@ -229,3 +228,69 @@ class SetOfStacks {
     return this.stacks[this.stacks.length - 1];
   }
 }
+
+
+/*
+Problem 3.4
+
+In the classic problem of the Towers of Hanoi, you have 3 rods and N disks of diﬀerent
+sizes which can slide onto any tower The puzzle starts with disks sorted in ascending
+order of size from top to bottom (e g , each disk sits on top of an even larger one) You
+have the following constraints:
+
+(A) Only one disk can be moved at a time
+(B) A disk is slid oﬀ the top of one rod onto the next rod
+(C) A disk can only be placed on top of a larger disk
+
+Write a program to move the disks from the frst rod to the last using Stacks
+*/
+class StackWithLength extends Stack {
+  constructor() {
+    super();
+    this.length = 0;
+  }
+  pop() {
+    this.length--;
+    return super.pop();
+  }
+  push(data) {
+    this.length++;
+    return super.push(data);
+  }
+}
+function hanoiTower(plateCount = 3) {
+  const stack0 = new StackWithLength();
+  for (let i = plateCount; i > 0; --i) {
+    stack0.push(i);
+  }
+  const stack1 = new StackWithLength();
+  const stack2 = new StackWithLength();
+
+  while (stack2.length < plateCount) {
+    function conditionalMove(firstStack, secondStack) {
+      if (!firstStack.peek()) {
+        firstStack.push(secondStack.pop());
+        // second stack to first
+      } else if (!secondStack.peek() || firstStack.peek() < secondStack.peek()) {
+        secondStack.push(firstStack.pop());
+        // first stack to second
+      } else {
+        firstStack.push(secondStack.pop());
+        // second stack to first
+      }
+    }
+    stack2.push(stack0.pop());
+    if (stack2.length === plateCount) {
+      break;
+    }
+    conditionalMove(stack0, stack1);
+    stack0.push(stack2.pop());
+    conditionalMove(stack1, stack2);
+    // 1 -> 2 or 2 -> 1?
+  }
+  return stack2;
+}
+
+console.log(hanoiTower(5));
+
+
