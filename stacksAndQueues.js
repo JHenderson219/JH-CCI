@@ -291,6 +291,49 @@ function hanoiTower(plateCount = 3) {
   return stack2;
 }
 
-console.log(hanoiTower(5));
+// console.log(hanoiTower(5));
 
 
+/*
+Problem 3.5
+
+Implement a MyQueue class which implements a queue using two stacks
+*/
+
+class MyQueue {
+  constructor() {
+    this.first = null;
+    this.last = null;
+    this.stackA = new Stack();
+    this.stackB = new Stack();
+  }
+  enqueue(node) {
+    if (!this.first) {
+      this.first = node;
+      this.last = node;
+      this.stackA.push(node);
+      return;
+    }
+    while (this.stackA.peek()) {
+      this.stackB.push(this.stackA.pop());
+    }
+
+    this.stackA.push(node);
+    this.last = node;
+
+    while (this.stackB.peek()) {
+      this.stackA.push(this.stackB.pop());
+    }
+  }
+  dequeue() {
+    const out = this.stackA.pop();
+    this.first = this.stackA.peek();
+    return out;
+  }
+}
+
+const myQueue = new MyQueue();
+
+const values = [1, 2, 3];
+values.forEach((e) => myQueue.enqueue(e));
+console.log(myQueue);
