@@ -334,6 +334,61 @@ class MyQueue {
 
 const myQueue = new MyQueue();
 
-const values = [1, 2, 3];
-values.forEach((e) => myQueue.enqueue(e));
-console.log(myQueue);
+// const values = [1, 2, 3];
+// values.forEach((e) => myQueue.enqueue(e));
+// console.log(myQueue);
+
+
+/*
+Problem 3.6
+
+Write a program to sort a stack in ascending order.
+
+You should not make any assumptions about how the stack is implemented
+
+The following are the only functions that should be used to write this program:
+push | pop | peek | isEmpty
+*/
+
+// nodes: 3, 8, 5, 6, 2
+function sortStackAsc(stack) {
+  function insertNode(node, head) {
+    // inserts nodes into a binary search tree
+    const direction = null;
+    if (node > head) {
+      direction = 'left';
+    } else {
+      direction = 'right';
+    }
+    if (head[direction]) {
+      insertNode(node, head[direction]);
+    } else {
+      head[direction] = node;
+    }
+    // if greater, go right
+    // if lesser or equal, go left
+  }
+
+  const head = stack.pop();
+  while (!stack.isEmpty()) {
+    const currNode = stack.pop();
+    insertNode(currNode, head);
+    // empty the stack, inserting all nodes into a binary search tree
+  }
+
+  function inOrder(head, action) {
+    // traverse bst depth-first, in-order and perform action for each node
+    if (head.left) {
+      inOrder(head.left, action);
+    }
+    action(head);
+    if (head.right) {
+      inOrder(head.right, action);
+    }
+    return;
+  }
+
+  inOrder(head, stack.push);
+  // traverse depth first and push each node back onto stack in order
+  return stack;
+}
