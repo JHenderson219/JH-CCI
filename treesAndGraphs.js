@@ -211,6 +211,12 @@ function isBalanced(root) {
   return out;
 }
 
+/*
+Problem 4.2
+
+Given a directed graph, design an algorithm to fnd out whether there is a route between two nodes
+*/
+
 
 /*
   Problem 4.3
@@ -314,4 +320,58 @@ function findNext(inputNode) {
       findNextNode(node.right, shouldReturn);
     }
   })(head);
+}
+
+/*
+Problem 4.6
+
+Design an algorithm and write code to find the frst common ancestor of two nodes
+in a binary tree
+
+Avoid storing additional nodes in a data structure
+
+NOTE: This is not necessarily a binary search tree
+
+*/
+
+/*
+ Assumptions:
+ Nodes are not linked to their parents
+ Storing a few nodes in individual variables is fine - helper data structures with tons of nodes are not (prioritize space efficency)
+ The tree is not a binary search tree
+*/
+
+function findAncestor(head, node1, node2) {
+  const foundNode1 = false;
+  const foundNode2 = false;
+  function findPathToNode(node, tgtNode, path = []) {
+    if (node === tgtNode) {
+      if (node === head) {
+        throw new Error('Head has no ancestors');
+      }
+      return path;
+    }
+    if (node.left) {
+      path.push('left');
+      postOrderTraverse(node.left);
+    }
+    if (node.right) {
+      path.push('right');
+      postOrderTraverse(node.right);
+    }
+  }
+  const path1 = findPathToNode(head, node1);
+  const path2 = findPathToNode(head, node2);
+  const ancestorPath = [];
+  const shortestLength = path1.length > path2.length ? path2.length : path1.length;
+  for (let i = 0; i < shortestLength; i++) {
+    if (path1[i] === path2[i]) {
+      ancestorPath.push(path1[i]);
+    }
+  }
+  const ancestor = head;
+  ancestorPath.forEach((direction) => {
+    ancestor = node[direction];
+  });
+  return ancestor;
 }
