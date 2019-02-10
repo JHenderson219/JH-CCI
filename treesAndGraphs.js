@@ -375,3 +375,124 @@ function findAncestor(head, node1, node2) {
   });
   return ancestor;
 }
+
+
+/*
+Problem 4.7
+
+You have two very large binary trees: T1, with millions of nodes, and T2, with hundreds of nodes
+
+Create an algorithm to decide if T2 is a subtree of T1
+
+*/
+
+function isSubtree(largeTree, smallTree) {
+  const commonHeadLargeTree;
+  function findHead(compareHead, tgtHead) {
+    const currNode = compareHead;
+    while (currNode.left) {
+      if (commonHeadLargeTree) {
+        break;
+      }
+      if (currNode === tgtHead) {
+        // could also compare values if comparing pointers won't work
+        commonHeadLargeTree = currNode;
+      }
+      currNode = currNode.left;
+    }
+    while (currNode.right) {
+      if (commonHeadLargeTree) {
+        break;
+      }
+      if (currNode === tgtHead) {
+        commonHeadLargeTree = currNode;
+      }
+      currNode = currNode.right
+    }
+    return;
+  }
+  findHead(largeTree.head, smallTree.head);
+  if (!commonHeadLargeTree) {
+    return false;
+  }
+  function validateSubtree(commonHeadLargeTree, smallTree) {
+    const currNodeLarge = commonHeadLargeTree;
+    const currNodeSmall = smallTree.head;
+    let isSubtree = true;
+    function checkTree() {
+        if (!isSubtree) {
+          return;
+        }
+        if (currNodeLarge !== currNodeSmall) {
+          isSubtree = false;
+          return;
+        }
+        if (currNodeSmall.left) {
+          currNodeLarge = currNodeLarge.left;
+          currNodeSmall = currNodeSmall.left;
+          checkTree();
+        }
+        if (currNodeSmall.right) {
+          currNodeLarge = currNodeLarge.right;
+          currNodeSmall = currNodeSmall.right;
+          checkTree();
+        }
+    }
+    checkTree();
+    return isSubtree;
+  }
+  return validateSubtree(commonHeadLargeTree, smallTree);
+}
+
+
+/*
+Problem 4.8
+
+You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum up to that value
+
+Note that it can be any path in the tree - it does not have to start at the root
+*/
+
+
+function findSumPaths(tree, tgtSum) {
+  const paths = [];
+  function preOrder(node, currSum = 0, path = []) {
+    currSum += node.value;
+    if (currSum === tgtSum) {
+      paths.push(path);
+    }
+    for (let i = path.length - 1; i > 0; i--) {
+      let tempPath = path.slice(i)
+      let startPath = path.slice(0, i);
+      let tempSum = sumPath(tempPath, getStartNode(startPath));
+      if (tempSum === tgtSum) {
+        tempPath.push(paths);
+      }
+    }
+    if (node.left) {
+      path.push('left');
+      preOrder(node.left, currSum, path.slice(0));
+    }
+    if (node.right) {
+      path.push('right');
+      preOrder(node.right, currSum, path.slice(0));
+    }
+  }
+  function getStartNode(startPath) {
+    let currNode = tree.head;
+    startPath.forEach(direction => {
+      currNode = node[direction];
+    })
+    return currNode;
+  }
+  function sumPath(pathArr, node = tree.head) {
+    let sum = 0;
+    pathArr.forEach(direction => {
+      sum += node.value;
+      node = node[direction];
+    })
+    return sum;
+  }
+  preOrder(tree.head)
+  return paths;
+}
