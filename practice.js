@@ -177,5 +177,182 @@ function sSanta(friends) {
   return assignments;
 }
 
-console.log(sSanta(friends));
+// console.log(sSanta(friends));
 // console.log(Math.floor(Math.random() * 4));
+
+/*
+Practice and investigation
+
+Memoize
+Throttle
+Debounce
+
+Returning values, and not returning values
+With closures, curried functions, composed functions, and promises
+
+*/
+
+/*
+Part 1: Memoize
+*/
+
+/*
+  Basic Memoize
+  - Single input (strings, integers)
+  - Assume synchronictiy
+*/
+const cache = new Map();
+
+function basicMemo(func, arg) {
+  if (cache.has(arg)) {
+    return cache.get(arg);
+  } else {
+    const res = func(arg);
+    cache.set(arg, res);
+    return res;
+  }
+}
+
+/*
+  Advanced Memoize
+  - Multi input (strings, integers)
+  - Assume asynchronicity
+*/
+async function advMemo(func, ...args) {
+  function argsToKey(args) {
+    const arr = Array.from(args);
+    return arr.reduce((prev, next) => prev += next, '');
+  }
+  const key = argsToKey(...args);
+  if (cache.has(key)) {
+    return cache.get(key);
+  } else {
+    return func(...args);
+  }
+}
+/*
+  Functional Advanced Memoize
+  - returns a then-able function
+*/
+function advMemo(func, ...args) {
+  function argsToKey(args) {
+    const arr = Array.from(args);
+    return arr.reduce((prev, next) => prev += next, '');
+  }
+  const key = argsToKey(...args);
+  let out;
+  if (cache.has(key)) {
+    out = async () => {
+      cache.get(key);
+    };
+  } else {
+    out = async () => {
+      func(...args);
+    };
+  }
+  return out;
+}
+
+/*
+Part 2: Throttle
+
+Returning values, and not returning values
+With closures, curried functions, composed functions, and promises
+*/
+
+/*
+  Throttle w/ closures
+*/
+
+function closureThrottle(delay = 500, func, ...args) {
+  const lastCall = 0;
+  function throttle() {
+    const now = (new Date()).getTime();
+    if (now - lastCall < delay) {
+      return;
+    } else {
+      lastCall = now;
+      return func(...args);
+    }
+  }
+  return throttle();
+}
+
+/*
+  Throttle w/ currying
+*/
+// function curryThrottle(delay) {
+//   const lastCall = 0;
+//   return function(func) {
+//     return function(...args) {
+//       const now = (new Date).getTime();
+//       if (now - lastCall < delay) {
+//         return;
+//       } else {
+//         return func(...args);
+//       }
+//     };
+//   };
+// }
+
+
+/*
+Throttle w/ timeouts (with return)
+*/
+let lastCall = 0;
+let timeout;
+async function asnycTimeoutThrottle(delay, func, ...args) {
+  async function throttle() {
+    const now = (new Date).getTime();
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    if (now - lastCall < delay) {
+      timeout = setTimeout(() => {
+        lastCall = (new Date).getTime();
+        console.log(new Date);
+        return func(...args);
+      }, delay);
+    } else {
+      lastCall = now;
+      console.log(new Date);
+      return func(...args);
+    }
+  }
+  const out = await throttle();
+  return out;
+}
+// const startDate = (new Date).getTime();
+// asnycTimeoutThrottle(1000, console.log, 'test1').then((resp) => {
+//   console.log((new Date).getTime() - startDate);
+// });
+// asnycTimeoutThrottle(1000, console.log, 'test2').then((resp) => {
+//   console.log((new Date).getTime() - startDate);
+// });
+// asnycTimeoutThrottle(1000, console.log, 'test3').then((resp) => {
+//   console.log((new Date).getTime() - startDate);
+// });
+
+/*
+  Throttle as composable
+*/
+function throttled(delay, func) {
+  // todo
+  // ... etc
+  let lastCall = 0;
+  let now = (new Date).getTime();
+  return async (...args) => {
+    now = (new Date).getTime();
+    console.log('lastCall', lastCall, 'now', now);
+    if (now - lastCall > delay) {
+      lastCall = now;
+      return func(...args);
+    }
+  };
+};
+
+const oneSecondLog = throttled(1000, console.log);
+
+oneSecondLog('test0');
+oneSecondLog('test1');
+oneSecondLog('test2');
