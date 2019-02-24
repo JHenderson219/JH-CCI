@@ -58,12 +58,13 @@ class RBTree {
     temp.left.isRed = true;
     return temp;
   }
-  _rotateRight() {
+  _rotateRight(node) {
     const temp = node.left;
     node.left = temp.right;
     temp.right = node;
     temp.isRed = temp.right.isRed;
     temp.right.isRed = true;
+    return temp;
   }
   _flipColors(node) {
     node.isRed = !node.isRed;
