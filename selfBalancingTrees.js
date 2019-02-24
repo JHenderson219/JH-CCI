@@ -11,40 +11,67 @@ class RBNode {
     this.right = null;
     this.isRed = true;
   }
-  addChild(node) {
-    let direction = 'left';
-    if (node.amt > this.amt) {
-      direction = 'right';
-    }
-    if (this[direction]) {
-      this[direction].addChild(node);
-    } else {
-      this[direction] = node;
-    }
-  }
 }
 class RBTree {
   constructor() {
     this.head = null;
   }
-  add(value) {
-    const newNode = new RBNode(value);
+  add(amt) {
+    const newNode = new RBNode(amt);
     if (!this.head) {
       this.head = newNode;
+      this.head.isRed = false;
     } else {
-      this.head.addChild(newNode);
+      this._add(newNode, this.head);
     }
-    if (!this._isBalanced()) {
-      this._rebalance();
-    }
-  }
-  _isBalanced() {
-    const out = true;
-    const currNode = this.head;
-    while (out) {
 
+    this.head.isRed = false;
+  }
+  _add(newNode, compareNode) {
+    if (!compareNode) {
+      return newNode;
     }
-    return out;
+    if (newNode.amt < compareNode.amt) {
+      compareNode.left = this._add(newNode, compareNode.left);
+    } else {
+      compareNode.right = this._add(newNode, compareNode.right);
+    }
+
+    if (this._isRed(compareNode.right) && !this._isRed(compareNode.left)) {
+      compareNode = this._rotateLeft(compareNode);
+    }
+
+    if (this._isRed(compareNode.left) && this._isRed(compareNode.left.left)) {
+      compareNode = this._rotateRight(compareNode);
+    }
+
+    if (this._isRed(compareNode.left) && this._isRed(compareNode.right)) {
+      this._flipColors(compareNode);
+    }
+    return compareNode;
+  }
+  _rotateLeft(node) {
+    const temp = node.right;
+    node.right = temp.left;
+    temp.left = node;
+    temp.isRed = temp.left.isRed;
+    temp.left.isRed = true;
+    return temp;
+  }
+  _rotateRight() {
+    const temp = node.left;
+    node.left = temp.right;
+    temp.right = node;
+    temp.isRed = temp.right.isRed;
+    temp.right.isRed = true;
+  }
+  _flipColors(node) {
+    node.isRed = !node.isRed;
+    node.left.isRed = !node.left.isRed;
+    node.right.isRed = !node.right.isRed;
+  }
+  _isRed(node) {
+    return node ? node.isRed : false;
   }
   delete() {
     // todo
