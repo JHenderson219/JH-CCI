@@ -1,3 +1,5 @@
+
+
 /*
 Tree basics
 */
@@ -41,18 +43,18 @@ class Tree {
 
   }
 }
-const values = [3, 7, 2, 4, 5, 1];
+// let values = [3, 7, 2, 4, 5, 1];
 
-function makeTree(arr) {
-  const tree = new Tree();
-  arr.forEach((value) => {
-    const node = new Node(value);
-    tree.add(node);
-  });
-  return tree;
-}
+// function makeTree(arr) {
+//   const tree = new Tree();
+//   arr.forEach((value) => {
+//     const node = new Node(value);
+//     tree.add(node);
+//   });
+//   return tree;
+// }
 
-const tree = makeTree(values);
+// const tree = makeTree(values);
 // console.log(tree);
 /**
  * Traverse a tree pre-order, perform callback on each node
@@ -284,8 +286,8 @@ function breadthFirstLinkedList(root) {
   makeList(listHeads);
   return listHeads;
 }
-const heads = breadthFirstLinkedList(tree.head);
-console.log(heads);
+// const heads = breadthFirstLinkedList(tree.head);
+// console.log(heads);
 
 /*
 Problem 4.5
@@ -387,7 +389,7 @@ Create an algorithm to decide if T2 is a subtree of T1
 */
 
 function isSubtree(largeTree, smallTree) {
-  const commonHeadLargeTree;
+  const commonHeadLargeTree = null;
   function findHead(compareHead, tgtHead) {
     const currNode = compareHead;
     while (currNode.left) {
@@ -407,7 +409,7 @@ function isSubtree(largeTree, smallTree) {
       if (currNode === tgtHead) {
         commonHeadLargeTree = currNode;
       }
-      currNode = currNode.right
+      currNode = currNode.right;
     }
     return;
   }
@@ -420,23 +422,23 @@ function isSubtree(largeTree, smallTree) {
     const currNodeSmall = smallTree.head;
     let isSubtree = true;
     function checkTree() {
-        if (!isSubtree) {
-          return;
-        }
-        if (currNodeLarge !== currNodeSmall) {
-          isSubtree = false;
-          return;
-        }
-        if (currNodeSmall.left) {
-          currNodeLarge = currNodeLarge.left;
-          currNodeSmall = currNodeSmall.left;
-          checkTree();
-        }
-        if (currNodeSmall.right) {
-          currNodeLarge = currNodeLarge.right;
-          currNodeSmall = currNodeSmall.right;
-          checkTree();
-        }
+      if (!isSubtree) {
+        return;
+      }
+      if (currNodeLarge !== currNodeSmall) {
+        isSubtree = false;
+        return;
+      }
+      if (currNodeSmall.left) {
+        currNodeLarge = currNodeLarge.left;
+        currNodeSmall = currNodeSmall.left;
+        checkTree();
+      }
+      if (currNodeSmall.right) {
+        currNodeLarge = currNodeLarge.right;
+        currNodeSmall = currNodeSmall.right;
+        checkTree();
+      }
     }
     checkTree();
     return isSubtree;
@@ -462,9 +464,9 @@ function findSumPaths(tree, tgtSum) {
       paths.push(path);
     }
     for (let i = path.length - 1; i > 0; i--) {
-      let tempPath = path.slice(i)
-      let startPath = path.slice(0, i);
-      let tempSum = sumPath(tempPath, getStartNode(startPath));
+      const tempPath = path.slice(i);
+      const startPath = path.slice(0, i);
+      const tempSum = sumPath(tempPath, getStartNode(startPath));
       if (tempSum === tgtSum) {
         tempPath.push(paths);
       }
@@ -480,19 +482,21 @@ function findSumPaths(tree, tgtSum) {
   }
   function getStartNode(startPath) {
     let currNode = tree.head;
-    startPath.forEach(direction => {
+    startPath.forEach((direction) => {
       currNode = node[direction];
-    })
+    });
     return currNode;
   }
   function sumPath(pathArr, node = tree.head) {
     let sum = 0;
-    pathArr.forEach(direction => {
+    pathArr.forEach((direction) => {
       sum += node.value;
       node = node[direction];
-    })
+    });
     return sum;
   }
-  preOrder(tree.head)
+  preOrder(tree.head);
   return paths;
 }
+
+
