@@ -1,3 +1,5 @@
+
+
 /*
 Binary & non binary trees
   Breadth-first
@@ -337,8 +339,6 @@ async function asnycTimeoutThrottle(delay, func, ...args) {
   Throttle as composable
 */
 function throttled(delay, func) {
-  // todo
-  // ... etc
   let lastCall = 0;
   let now = (new Date).getTime();
   return async (...args) => {
@@ -353,6 +353,35 @@ function throttled(delay, func) {
 
 const oneSecondLog = throttled(1000, console.log);
 
-oneSecondLog('test0');
-oneSecondLog('test1');
-oneSecondLog('test2');
+// oneSecondLog('test0');
+// oneSecondLog('test1');
+// oneSecondLog('test2');
+
+function debounced(minDelay, func) {
+  let timeout;
+  let lastCall = 0;
+  let now = (new Date).getTime();
+  return async (...args) => {
+    now = (new Date).getTime();
+    if (now - lastCall > minDelay) {
+      lastCall = now;
+      return func(...args);
+    } else {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      const promise = new Promise((resolve, reject) => {
+        let out;
+        timeout = setTimeout(() => {
+          out = func(...args);
+        }, minDelay);
+        resolve(out);
+      });
+    }
+  };
+}
+
+const debouncedLog = debounced(1000, console.log);
+debouncedLog('test0');
+debouncedLog('test1');
+debouncedLog('test2');
