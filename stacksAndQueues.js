@@ -1,3 +1,6 @@
+import { merge } from "rxjs";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
+
 /*
 Stacks & Queues setup
 */
@@ -351,44 +354,91 @@ push | pop | peek | isEmpty
 */
 
 // nodes: 3, 8, 5, 6, 2
+// This uses a helper data structure (binary search tree)
+// function sortStackAsc(stack) {
+//   function insertNode(node, head) {
+//     // inserts nodes into a binary search tree
+//     const direction = null;
+//     if (node > head) {
+//       direction = 'left';
+//     } else {
+//       direction = 'right';
+//     }
+//     if (head[direction]) {
+//       insertNode(node, head[direction]);
+//     } else {
+//       head[direction] = node;
+//     }
+//     // if greater, go right
+//     // if lesser or equal, go left
+//   }
+
+//   const head = stack.pop();
+//   while (!stack.isEmpty()) {
+//     const currNode = stack.pop();
+//     insertNode(currNode, head);
+//     // empty the stack, inserting all nodes into a binary search tree
+//   }
+
+//   function inOrder(head, action) {
+//     // traverse bst depth-first, in-order and perform action for each node
+//     if (head.left) {
+//       inOrder(head.left, action);
+//     }
+//     action(head);
+//     if (head.right) {
+//       inOrder(head.right, action);
+//     }
+//     return;
+//   }
+
+//   inOrder(head, stack.push);
+//   // traverse depth first and push each node back onto stack in order
+//   return stack;
+// }
+
+// This uses sorting an array
 function sortStackAsc(stack) {
-  function insertNode(node, head) {
-    // inserts nodes into a binary search tree
-    const direction = null;
-    if (node > head) {
-      direction = 'left';
-    } else {
-      direction = 'right';
-    }
-    if (head[direction]) {
-      insertNode(node, head[direction]);
-    } else {
-      head[direction] = node;
-    }
-    // if greater, go right
-    // if lesser or equal, go left
-  }
-
-  const head = stack.pop();
+  const stackArr = [];
   while (!stack.isEmpty()) {
-    const currNode = stack.pop();
-    insertNode(currNode, head);
-    // empty the stack, inserting all nodes into a binary search tree
+    stackArr.push(stack.pop());
+  }
+  function mergeSort(arr) {
+    if (arr.length < 2) {
+      return arr;
+    }
+    const left = [];
+    const right = [];
+    arr.forEach((e, i) => {
+      if (i < Math.floor(arr.length/2)) {
+        left.push(e);
+      } else {
+        right.push(e);
+      }
+    });
+    left = mergeSort(left);
+    right = mergeSort(right);
+    return merge(left, right);
+  }
+  function merge(left, right) {
+    let out = [];
+    let l = 0;
+    let r = 0;
+    while (out.length < (left.length + right.length)) {
+      if (!right[r] || left[l] < right[r]) {
+        out.push(l);
+        l++;
+      } else if (!left[l] || right[r] <= left[l]) {
+        out.push(r);
+        r++;
+      }
+    }
+    return out;
   }
 
-  function inOrder(head, action) {
-    // traverse bst depth-first, in-order and perform action for each node
-    if (head.left) {
-      inOrder(head.left, action);
-    }
-    action(head);
-    if (head.right) {
-      inOrder(head.right, action);
-    }
-    return;
+  stackArr = mergeSort(stackArr);
+  for (let i = stackArr.length - 1; i > 0; i--) {
+    stack.push(stackArr[i]);
   }
-
-  inOrder(head, stack.push);
-  // traverse depth first and push each node back onto stack in order
   return stack;
 }
