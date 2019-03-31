@@ -234,5 +234,23 @@ function checkCashRegister(price, cash, cid) {
 //   return true;
 // }
 
-console.log(telephoneCheck('555-555-5555'));
+// console.log(telephoneCheck('555-555-5555'));
 
+function bin2Int(binStr) {
+  // convert binary string to integer
+  // take last digit, that provides +1 or +0
+  let int = 0;
+  for (let i = 0; i < binStr.length; i++) {
+    const digit = parseInt(binStr[i]);
+    int += digit*Math.pow(2, binStr.length - 1 - i);
+  }
+
+  // for each digit
+    // += digit*2Math.pow(place in string (inverse of index))
+  return int;
+}
+
+console.log(bin2Int('100')); // 4
+console.log(bin2Int('100010')); // 34
+console.log(bin2Int('1011000101')); // 709
+console.log(bin2Int('10110101')); // 181
