@@ -357,31 +357,87 @@ const oneSecondLog = throttled(1000, console.log);
 // oneSecondLog('test1');
 // oneSecondLog('test2');
 
-function debounced(minDelay, func) {
-  let timeout;
-  let lastCall = 0;
-  let now = (new Date).getTime();
-  return async (...args) => {
-    now = (new Date).getTime();
-    if (now - lastCall > minDelay) {
-      lastCall = now;
-      return func(...args);
-    } else {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-      const promise = new Promise((resolve, reject) => {
-        let out;
-        timeout = setTimeout(() => {
-          out = func(...args);
-        }, minDelay);
-        resolve(out);
-      });
-    }
-  };
-}
+// function debounced(minDelay, func) {
+//   let timeout;
+//   let lastCall = 0;
+//   let now = (new Date).getTime();
+//   return async (...args) => {
+//     now = (new Date).getTime();
+//     if (now - lastCall > minDelay) {
+//       lastCall = now;
+//       return func(...args);
+//     } else {
+//       if (timeout) {
+//         clearTimeout(timeout);
+//       }
+//       const promise = new Promise((resolve, reject) => {
+//         let out;
+//         timeout = setTimeout(() => {
+//           out = func(...args);
+//         }, minDelay);
+//         resolve(out);
+//       });
+//     }
+//   };
+// }
 
-const debouncedLog = debounced(1000, console.log);
-debouncedLog('test0');
-debouncedLog('test1');
-debouncedLog('test2');
+// const debouncedLog = debounced(1000, console.log);
+// debouncedLog('test0');
+// debouncedLog('test1');
+// debouncedLog('test2');
+
+/*
+Given two binary strings, return their sum (also a binary string).
+Example:
+Input:  a = "11", b = "1"
+Output: "100"
+*/
+
+function addBinaryStrings(str1, str2) {
+  // init stack
+  const stack = [];
+  // init sum
+  let sum = 0;
+  let longest = str1;
+  let shortest = str2;
+  // zero-pad shortest string to left
+  if (str1.length < str2.length) {
+    // find shortest string
+    longest = str2;
+    shortest = str1;
+  }
+  shortest = shortest.padStart(longest.length, '0');
+  // overwrite with zero padded version
+  let i = longest.length - 1;
+  do {
+    // iterate right-to-left on first string
+    // at each index, add values together (sum + char1 + char2)
+    const int1 = longest[i] ? parseInt(longest[i]) : 0;
+    const int2 = shortest[i] ? parseInt(shortest[i]) : 0;
+    sum = sum + int1 + int2;
+    switch (sum) {
+      case 1:
+        // if sum 1, stack 1, sum - 1
+        stack.push(1);
+        sum = sum - 1;
+        break;
+      case 2:
+        // if sum 2, stack 0, sum - 1
+        stack.push(0);
+        sum = sum - 1;
+        break;
+      case 3:
+        // if sum 3, stack 1, sum - 2
+        stack.push(1);
+        sum = sum - 2;
+        break;
+      default:
+        // if sum 0, stack 0
+        stack.push(0);
+    }
+    i--;
+  } while (sum > 0 || i > -1);
+  return stack.reverse().join('');
+  // assemble stack to string and return
+}
+console.log(addBinaryStrings('101011', '11'));
