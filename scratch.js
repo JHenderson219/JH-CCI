@@ -250,7 +250,54 @@ function bin2Int(binStr) {
   return int;
 }
 
-console.log(bin2Int('100')); // 4
-console.log(bin2Int('100010')); // 34
-console.log(bin2Int('1011000101')); // 709
-console.log(bin2Int('10110101')); // 181
+// console.log(bin2Int('100')); // 4
+// console.log(bin2Int('100010')); // 34
+// console.log(bin2Int('1011000101')); // 709
+// console.log(bin2Int('10110101')); // 181
+
+// function bar() {
+//   console.log('function bar called. context is', this);
+//   return () => {
+//     console.log('function returend from bar called. context is:', this);
+//   }
+// }
+// const test = () => {
+//   console.log('arrow function test called. context is', this);
+// };
+// function foo() {
+//   console.log('function foo called. context is', this);
+//   test();
+// }
+// function baz() {
+//   bar()();
+// }
+// test();
+// foo();
+// baz();
+
+// class Foo {
+//   method() {
+//     (() => {
+//       console.log(this);
+//     })();
+//   }
+//   bar() {
+//     return () => {
+//       console.log(this);
+//     };
+//   }
+// }
+// const bop = () => {
+//   console.log(this);
+// }
+// class Baz {
+//   method() {
+//     return (new Foo).bar();
+//   }
+//   bar() {
+//     return bop;
+//   }
+// }
+// (new Baz).bar()();
+
+// console.log(this);
