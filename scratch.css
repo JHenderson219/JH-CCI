@@ -1,0 +1,19 @@
+body {
+  background: grey;
+  color: white;
+  max-width: 1000px;
+}
+.red {
+  border: red 1px solid;
+}
+
+.width-250px {
+  width: 250px;
+}
+.height-250px {
+  height: 250px;
+}
+.float-left {
+  float: left;
+}
+
